@@ -1,0 +1,29 @@
+---
+
+- name: updating apt cache
+  command: apt-get update
+  become: true
+
+- name: Installing python-apt for apt module
+  command: apt-get install python-apt -y -q
+  become: true
+
+- name: Install dnsmasq service
+  apt:
+      name: dnsmasq
+      state: present
+  become: true
+
+- name: Templating out dnsmasq config file
+  template:
+     src: dnsmasq-conf.jinja2
+     dest: /etc/dnsmasq.conf
+  become: yes
+
+- name: enable dnsmasq service
+  systemd:
+    name: dnsmasq.service
+    enabled: yes
+    masked: no
+  become: yes
+

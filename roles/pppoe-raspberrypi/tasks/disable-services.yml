@@ -1,0 +1,72 @@
+---
+# Disables services that are most commonly installed by default on debian distro. Done so that the router doesn't have more ports open than necessary.
+
+- name: Disable NetworkManager
+  systemd:
+    name: NetworkManager.service
+    enabled: no
+    masked: yes
+  become: yes
+  ignore_errors: yes
+
+- name: Disable systemd-resolved
+  systemd:
+    name: systemd-resolved.service
+    enabled: no
+    masked: yes
+  become: yes   
+
+- name: Disable rpcbind
+  systemd:
+    name: rpcbind.service
+    enabled: no
+    masked: no
+  become: yes
+  ignore_errors: yes
+
+- name: Disable rpcbind.socket
+  systemd:
+    name: rpcbind.socket
+    enabled: no
+    masked: no
+  become: yes
+  ignore_errors: yes
+
+- name: Disable nfs-common
+  systemd:
+    name: nfs-common.service
+    enabled: no
+    masked: no
+  become: yes
+  ignore_errors: yes
+
+- name: Disable nfs-mountd
+  systemd:
+    name: nfs-mountd.service
+    enabled: no
+    masked: no
+  become: yes
+  ignore_errors: yes
+
+- name: Disable dhcpcd
+  systemd:
+    name: dhcpcd.service
+    enabled: no
+    masked: no
+  become: yes
+  ignore_errors: yes
+
+- name: Disable exim4
+  systemd:
+    name: exim4
+    enabled: no
+    masked: no
+  become: yes
+  ignore_errors: yes
+
+
+
+
+
+
+

@@ -1,0 +1,61 @@
+---
+
+- name: updating apt cache
+  command: apt-get update
+  become: true
+
+- name: Installing python-apt for apt module
+  command: apt-get install python-apt -y -q
+  become: true
+
+- name: Installing pppd
+  apt:
+      name: ppp
+      state: present
+  become: true
+
+- name: Templating out ppp chap file
+  template:
+     src: chap-secrets.jinja2
+     dest: /etc/ppp/chap-secrets
+  become: yes
+
+- name: Templating out ppp pap file
+  template:
+     src: pap-secrets.jinja2
+     dest: /etc/ppp/pap-secrets
+  become: yes
+
+- name: Templating out ppp dsl-provider config
+  template:
+     src: dsl-provider.jinja2
+     dest: /etc/ppp/peers/dsl-provider
+  become: yes
+
+- name: Templating out ppp ip-up script
+  template:
+     src: ip-up.jinja2
+     dest: /etc/ppp/ip-up.d/0001additional
+     mode: '0744'
+  become: yes
+
+- name: Templating out ppp systemd unit file
+  template:
+     src: ppp-systemd-unit.jinja2
+     dest: /etc/systemd/system/ppp.service
+  become: yes
+
+- name: Reload systemd configs
+  systemd:
+    daemon_reload: yes
+  become: yes
+
+- name: enable ppp service
+  systemd:
+    name: ppp.service
+    enabled: yes
+    masked: no
+  become: yes
+
+
+        

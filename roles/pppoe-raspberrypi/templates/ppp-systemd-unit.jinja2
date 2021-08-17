@@ -1,0 +1,12 @@
+[Unit]
+BindsTo=sys-subsystem-net-devices-{{ ppp_interface }}.device
+After=sys-subsystem-net-devices-{{ ppp_interface }}.device
+[Service]
+ExecStartPre=/sbin/ip link set up dev {{ ppp_interface }}
+ExecStart=/usr/sbin/pppd call dsl-provider
+Type=forking
+SuccessExitStatus=0
+PIDFile=/var/run/ppp0.pid
+Restart=always
+[Install]
+WantedBy=sys-subsystem-net-devices-{{ ppp_interface }}.device

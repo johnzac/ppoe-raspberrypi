@@ -1,0 +1,16 @@
+---
+- include: setup-hostapd.yml
+  when: setup_hotspot
+- include: setup-prometheus.yml
+  when: setup_monitoring
+- include: setup-grafana.yml
+  when: setup_monitoring
+- include: ssh-config.yml
+- include: setup-pppd.yml
+- include: disable-services.yml
+- include: setup-systemd-networkd.yml
+- include: setup-dnsmasq.yml
+- include: enable-mac-interface-binding.yml
+
+
+

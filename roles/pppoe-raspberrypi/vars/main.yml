@@ -1,0 +1,23 @@
+---
+# Subnet mask for the dhcp bridge. The dhcp_end_ip and dhcp_start_ip needs to fall within this range.
+dhcp_bridge_subnet: "24"
+# Static ip address for dhcp_bridge. This ip will serve as the router as well.
+dhcp_bridge_ip: "192.168.8.1"
+dhcp_lease_time: "12h"
+#The highest ip address dnsmasq dhcp will serve out.
+dhcp_end_ip: "192.168.8.20"
+#The lowest ip address dnsmasq dhcp will serve out.
+dhcp_start_ip: "192.168.8.10"
+#ppp authentication settings, will template out configs for both PAP as well as CHAP from these vars.
+ppp_password: "PASSWORD"
+ppp_username: "USERNAME"
+#The interface the wan cable is connected to
+ppp_interface: "eth0"
+dashboard_dir: "/var/lib/grafana/dashboards"
+hotspot_interface: "wlan0"
+hotspot_ssid: "pifi"
+hotspot_password: "PASSWORD"
+# if set to true, sets up pi to work as an AP with above creds.
+setup_hotspot: true
+# If set to true, installs prometheus, node exporer and grafana( With nodeexporter dashboard provisioned). To access, navigate to http://dhcp_bridge_ip:3000
+setup_monitoring: false

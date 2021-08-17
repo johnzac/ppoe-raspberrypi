@@ -1,0 +1,11 @@
+---
+# Interface namng based on mac address is masked by default on raspbian. ENabling it. Needs to be enabled since only interfaces strting with enx* are added to dhcp-bridge( By default, any interface connected via usb)
+- name: Removing /etc/systemd/network/99-default.link if it is masking mac based interface naming
+  file:
+    path: /etc/systemd/network/99-default.link
+    state: absent
+  become: yes
+
+
+
+

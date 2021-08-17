@@ -1,0 +1,10 @@
+noipdefault
+defaultroute
+replacedefaultroute
+hide-password
+noauth
+persist
+plugin rp-pppoe.so
+nic-{{ ppp_interface }}
+usepeerdns
+user "{{ ppp_username }}"

@@ -1,0 +1,7 @@
+---
+- name: Templating out sshd env file
+  template:
+     src: sshd-env.jinja2
+     dest: /etc/default/ssh
+  become: yes
+

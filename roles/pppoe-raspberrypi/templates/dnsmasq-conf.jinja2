@@ -1,0 +1,5 @@
+resolv-file=/etc/ppp/resolv.conf
+interface=dhcp-bridge
+dhcp-range={{ dhcp_start_ip }},{{ dhcp_end_ip }},{{ dhcp_lease_time }}
+dhcp-option=26,1492
+dhcp-option=6,{{ dhcp_bridge_ip }}

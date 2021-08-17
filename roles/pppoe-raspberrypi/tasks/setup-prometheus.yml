@@ -1,0 +1,49 @@
+---
+
+- name: updating apt cache
+  command: apt-get update
+  become: true
+
+- name: Installing python-apt for apt module
+  command: apt-get install python-apt -y -q
+  become: true
+
+- name: Install prometheus and node exporter service
+  apt:
+      name: prometheus
+      state: present
+  become: true
+
+- name: Templating out prometheus config file
+  template:
+     src: prometheus-config.jinja2
+     dest: /etc/prometheus/prometheus.yml
+  become: yes
+
+- name: Templating out prometheus env file
+  template:
+     src: prometheus-env.jinja2
+     dest: /etc/default/prometheus
+  become: yes
+
+- name: Templating out nodeexporter env file
+  template:
+     src: nodeexporter-env.jinja2
+     dest: /etc/default/prometheus-node-exporter
+  become: yes
+
+- name: enable prometheus service
+  systemd:
+    name: prometheus.service
+    enabled: yes
+    masked: no
+  become: yes
+
+- name: enable nodeexporter service
+  systemd:
+    name: prometheus-node-exporter.service
+    enabled: yes
+    masked: no
+  become: yes
+
+

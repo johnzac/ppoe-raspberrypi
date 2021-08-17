@@ -1,0 +1,49 @@
+---
+# Delegates the responsibility of creating dhcp-bridge and adding new connections via usb to the bridge to systemd-networkd. The dummy interface is created so that the bridge gets set up with the static ip address even in the absence of any physical devices attached to it. Required since all services we need( including ssh) binds to the bridge ip.
+
+- name: Templating out bridge network device
+  template:
+     src: dhcp-bridge-netdev-systemd.jinja2 
+     dest: /etc/systemd/network/dhcp-bridge.netdev
+  become: yes
+
+- name: Templating out networking for bridge
+  template:
+     src: dhcp-bridge-network-systemd.jinja2
+     dest: /etc/systemd/network/dhcp-bridge.network
+  become: yes
+
+
+- name: Templating out bridge-inerface bindings
+  template:
+     src: bind-systemd.jinja2
+     dest: /etc/systemd/network/bind.network
+  become: yes
+
+- name: Templating out dummy network device( Bridge hack)
+  template:
+     src: dummy-netdev-systemd.netdev
+     dest: /etc/systemd/network/dummy.netdev
+  become: yes
+
+- name: Templating out bridge binding for dummy device( Bridge hack)
+  template:
+     src: dummy-network-systemd.jinja2
+     dest: /etc/systemd/network/dummy.network
+  become: yes
+
+
+- name: Reload systemd configs
+  systemd:
+    daemon_reload: yes
+  become: yes
+
+- name: enable systemd-networkd
+  systemd:
+    name: systemd-networkd.service
+    enabled: yes
+    masked: no
+  become: yes
+
+
+

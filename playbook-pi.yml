@@ -1,0 +1,4 @@
+- hosts: home-raspberry
+  roles:
+      - pppoe-raspberrypi
+

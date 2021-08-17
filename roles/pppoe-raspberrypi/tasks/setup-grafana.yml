@@ -1,0 +1,77 @@
+---
+
+- name: updating apt cache
+  command: apt-get update
+  become: true
+
+- name: Installing python3-apt for apt module
+  command: apt-get install python3-apt -y -q
+  become: true
+
+- name: Install curl binary
+  apt:
+      name: curl
+      state: present
+  become: true
+
+- name: Add grafana apt key
+  shell: curl -s https://packages.grafana.com/gpg.key | apt-key add -
+  become: true
+
+- name: Adding grafana repository
+  apt_repository:
+      repo: deb https://packages.grafana.com/oss/deb stable main
+      state: present
+      update_cache: yes
+  become: true
+
+- name: Install grafana service
+  apt:
+      name: grafana
+      state: present
+  become: true
+
+- name: Templating out grafana env file
+  template:
+     src: grafana-env.jinja2
+     dest: /etc/default/grafana-server
+     mode: 0644
+  become: yes
+
+- name: Templating out grafana dashboard provisioning configs
+  template:
+     src: grafana-dashboard-config.jinja2
+     dest: /etc/grafana/provisioning/dashboards/sample.yaml
+     mode: 0644
+  become: yes
+
+- name: Templating out grafana datasource provisioning configs
+  template:
+     src: grafana-datasource-config.jinja2
+     dest: /etc/grafana/provisioning/datasources/prometheus.yaml
+     mode: 0644
+  become: yes
+
+- name: Ensures {{ dashboard_dir }} exists
+  file: path={{ dashboard_dir }} state=directory
+  become: yes
+
+- name: Copying nodeexporter dashboard json
+  copy:
+     dest: "{{ dashboard_dir }}/nodeexporter.json"
+     src: dashboards/nodeexporter-dashboard.json
+     mode: 0644
+  become: yes
+
+- name: enable grafana service
+  systemd:
+    name: grafana-server.service
+    enabled: yes
+    masked: no
+  become: yes
+
+
+
+
+
+

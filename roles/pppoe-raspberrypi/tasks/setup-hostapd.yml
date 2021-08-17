@@ -1,0 +1,33 @@
+---
+
+- name: updating apt cache
+  command: apt-get update
+  become: true
+
+- name: Installing python-apt for apt module
+  command: apt-get install python-apt -y -q
+  become: true
+
+- name: Install hostapd service
+  apt:
+      name: hostapd
+      state: present
+  become: true
+
+- name: Templating out hostapd config file
+  template:
+     src: hostapd-conf.jinja2
+     dest: /etc/hostapd/hostapd.conf
+  become: yes
+
+- name: Unblocking wlan on rfkill
+  command: rfkill unblock wlan
+  become: true
+
+- name: enable hostapd service
+  systemd:
+    name: hostapd.service
+    enabled: yes
+    masked: no
+  become: yes
+
