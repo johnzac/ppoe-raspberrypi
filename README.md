@@ -3,3 +3,5 @@ Sets up a raspberry pi to work as a gatway to dsl over pppoe. It's assumed the w
 To run, simply modify the hosts file with the ip address and password for your pi and run "ansible-playbook playbook-pi.yml" from the git root directory. 
 
 Verified on raspbian buster - linux-5.4.51, systemd - 241
+
+You can find an extensive writeup on what the playbook does here: https://medium.com/@zacharia.john92/learning-basic-linux-networking-with-a-raspberry-pi-3d57ddc959a4
